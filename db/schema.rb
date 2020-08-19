@@ -12,10 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2020_08_17_172918) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "assignments", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.integer "course_id", null: false
+    t.bigint "course_id", null: false
     t.integer "points"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -24,7 +27,7 @@ ActiveRecord::Schema.define(version: 2020_08_17_172918) do
 
   create_table "courses", force: :cascade do |t|
     t.string "name"
-    t.integer "teacher_id", null: false
+    t.bigint "teacher_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_courses_on_name", unique: true
@@ -32,8 +35,8 @@ ActiveRecord::Schema.define(version: 2020_08_17_172918) do
   end
 
   create_table "courses_students", id: false, force: :cascade do |t|
-    t.integer "course_id", null: false
-    t.integer "student_id", null: false
+    t.bigint "course_id", null: false
+    t.bigint "student_id", null: false
     t.index ["course_id", "student_id"], name: "index_courses_students_on_course_id_and_student_id", unique: true
     t.index ["course_id"], name: "index_courses_students_on_course_id"
     t.index ["student_id"], name: "index_courses_students_on_student_id"
@@ -52,8 +55,8 @@ ActiveRecord::Schema.define(version: 2020_08_17_172918) do
   end
 
   create_table "submissions", force: :cascade do |t|
-    t.integer "assignment_id", null: false
-    t.integer "student_id", null: false
+    t.bigint "assignment_id", null: false
+    t.bigint "student_id", null: false
     t.integer "points"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

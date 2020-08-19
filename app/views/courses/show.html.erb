@@ -2,10 +2,12 @@
 
 <% if teacher_signed_in? && current_teacher.courses.exists?(@course.id)%>
   <%= render 'teacher' %>
+<% elsif teacher_signed_in? %>
+  <%= render 'public' %>
 <% end %>
 
 <% if student_signed_in? %>
-  <%= render 'student' %>
+  <%= render 'public' %>
 <% end %>
 
 <% if !student_signed_in? && !teacher_signed_in? %>

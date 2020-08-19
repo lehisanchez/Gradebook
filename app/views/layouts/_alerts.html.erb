@@ -1,0 +1,7 @@
+<% flash.each do |key, value| %>
+  <div class="<%= flash_class(key) %>" role="alert">
+    <div class="max-w-screen-lg mx-auto">
+      <span><%= value %></span>
+    </div>
+  </div>
+<% end %>

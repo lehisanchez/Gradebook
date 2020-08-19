@@ -1,0 +1,57 @@
+<div class="max-w-screen-lg mx-auto mb-10">
+  <div class="flex flex-col">
+    <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div class="align-middle inline-block min-w-full overflow-hidden sm:rounded border border-gray-400">
+        <table class="min-w-full">
+          <thead class="bg-gray-200">
+            <tr>
+              
+              <% if columns.include? 'course' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Course                                      
+                </th>    
+              <% end %>
+              
+              <% if columns.include? 'teacher' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Teacher                                     
+                </th>
+              <% end %>
+              
+              <% if columns.include? 'enrolled' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Enrolled
+                </th>
+              <% end %>
+              
+              <% if columns.include? 'average' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Class Average
+                </th>
+              <% end %>
+              
+              <% if columns.include? 'status' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Status
+                </th>
+              <% end %>
+              
+              <% if columns.include? 'grade' %>
+                <th class="px-6 py-3 border-b border-gray-400 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
+                  Grade
+                </th>
+              <% end %>
+              
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <% courses.each do |course| %>
+              <%= render 'shared/course', course: course, columns: columns %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+

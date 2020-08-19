@@ -1,0 +1,112 @@
+<div class="max-w-screen-lg mx-auto px-2 lg:px-0 mb-10">
+  <div class="bg-white shadow overflow-hidden border-collapse rounded border border-gray-400">
+    <div class="flex justify-between items-center px-4 py-5 border-b border-gray-200 sm:px-6">
+      <h3 class="text-2xl leading-6 font-medium text-gray-900">
+        <%= @course.name %>
+      </h3>
+      <% if student_signed_in? %>
+        <div data-controller="registration" data-registration-course="<%= @course.id %>" data-registration-student="<%= current_student.id %>">
+          <% if @course.students.exists?(current_student.id) %>
+            <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-6 font-medium rounded-full text-white focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-red-600 hover:bg-red-500" 
+                    data-action="click->registration#destroy">
+                Leave Course
+            </button>
+          <% else %>
+            <button class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-6 font-medium rounded-full text-white focus:outline-none focus:shadow-outline transition duration-150 ease-in-out bg-green-600 hover:bg-green-500" 
+                    data-action="click->registration#create">
+                Enroll
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div>
+      <dl>
+        <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm leading-5 font-medium text-gray-700">
+            Instructor
+          </dt>
+          <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+            <%= @course.teacher.full_name %>
+          </dd>
+        </div>
+        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm leading-5 font-medium text-gray-700">
+            Description
+          </dt>
+          <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </dd>
+        </div>
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+          <dt class="text-sm leading-5 font-medium text-gray-700">
+            Syllabus
+          </dt>
+          <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+            <table class="table-auto w-full bg-white border-collapse border-2 border-gray-300">
+              <thead>
+                <tr>
+                  <th class="px-4 py-5">Assignment</th>
+                  <th class="px-4 py-5">Points</th>
+                  <% if student_signed_in? && @course.students.exists?(current_student.id) %>
+                    <th class="px-4 py-5">Score</th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% @course.assignments.each do |assignment| %>
+                  <tr class="text-sm">
+                    <td class="relative border px-4 py-2">
+                      <%= assignment.name %>
+                    </td>
+                    <td class="relative text-center border px-4 py-2">
+                      <%= assignment.points %>
+                    </td>
+                    
+                    <% if student_signed_in? && @course.students.exists?(current_student.id) %>
+                    
+                      <td class="relative border px-4 py-2 text-center">
+                    
+                        <% if assignment.submissions.where(student: current_student).take %>
+                        
+                          <%= assignment.submissions.where(student: current_student).take.points %>
+                          
+                        <% else %>
+                          
+                          <div data-controller="submission"
+                               data-submission-assignment="<%= assignment.id %>"
+                               data-submission-student="<%= current_student.id %>"
+                               data-submission-points="<%= (assignment.points*rand(0.7..1).round(1)) %>">
+                            <button data-action="click->submission#create" class="w-full bg-blue-500 hover:bg-blue-400 text-white text-xs font-bold py-1 px-4 border-b-2 border-blue-700 hover:border-blue-500 rounded">Submit</button>
+                          </div>
+                          
+                        <% end %>
+                        
+                      </td>
+                      
+                    <% end %>
+                    
+                  </tr>
+                <% end %>
+              </tbody>
+              
+              <% if student_signed_in? && @course.students.exists?(current_student.id) %>
+                <tfoot>
+                  <tr class="text-sm">
+                    <td class="relative border px-4 py-4 font-bold">Total</td>
+                    <td id="totalSubmissionPoints" class="relative border px-4 py-2 text-center font-bold"><%= @course.assignments.sum(:points) %></td>
+                    <td id="totalAssignmentPoints" class="relative border px-4 py-2 text-center font-bold"><%= @course.submissions.where(student: current_student).sum(:points) %></td>
+                  </tr>
+                  <tr class="text-sm">
+                    <th class="relative border px-4 py-4 font-bold">Grade</th>
+                    <th colspan="2"><%= student_course_letter_grade(current_student, @course) %></th>
+                  </tr>
+                </tfoot>
+              <% end %>
+            </table>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>

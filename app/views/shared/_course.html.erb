@@ -1,0 +1,61 @@
+<tr>
+  
+  <% if columns.include? 'course' %>
+    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+      <div class="text-sm leading-5 text-gray-900">
+        <%= link_to course.name, course_path(course), class: 'hover:underline' %>
+      </div>
+    </td>
+  <% end %>
+  
+  <% if columns.include? 'teacher' %>
+    <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 h-10 w-10">
+          <%= image_tag course.teacher.avatar, class: "h-10 w-10 rounded-full border" %>
+        </div>
+        <div class="ml-4">
+          <div class="text-sm leading-5 font-medium text-gray-900">
+            <%= course.teacher.full_name %>
+          </div>
+          <div class="text-sm leading-5 text-gray-500">
+            <%= course.teacher.email %>
+          </div>
+        </div>
+      </div>
+    </td>
+  <% end %>
+  
+  <% if columns.include? 'enrolled' %>
+    <td class="px-6 py-4 text-left text-sm whitespace-no-wrap border-b border-gray-200">
+      <%= course.students.count %>
+    </td>
+  <% end %>
+  
+  <% if columns.include? 'average' %>
+    <td class="px-6 py-4 text-left text-sm whitespace-no-wrap border-b border-gray-200">
+      <%= course_average_percentage_grade(course) %>%
+    </td>
+  <% end %>
+  
+  <% if columns.include? 'status' %>
+    <% if student_signed_in? %>
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <% if course.students.exists?(current_student.id) %>
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+            Registered
+          </span>
+        <% end %>
+      </td>
+    <% end %>
+  <% end %>
+  
+  <% if columns.include? 'grade' %>
+    <% if student_signed_in? %>
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <%= student_course_percentage_grade(current_student, course) %>%
+      </td>
+    <% end %>
+  <% end %>
+    
+</tr>

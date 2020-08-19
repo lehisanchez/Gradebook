@@ -1,0 +1,14 @@
+<%= render 'shared/header', heading: student_signed_in? ? 'Course Catalog' : @course.name  %>
+
+<% if teacher_signed_in? && current_teacher.courses.exists?(@course.id)%>
+  <%= render 'teacher' %>
+<% end %>
+
+<% if student_signed_in? %>
+  <%= render 'student' %>
+<% end %>
+
+<% if !student_signed_in? || !teacher_signed_in? %>
+  <%= render 'public' %>
+<% end %>
+

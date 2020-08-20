@@ -18,3 +18,6 @@ This application mimics features found in Canvas, the online learning platform m
 - Students can submit assignments for a grade
 - Students can browse a course catalog
 - Students can view all of their courses and grades on a dashboard
+
+## Personal Goals 
+I developed this application as an oppurtunity to learn and use Stimulus Reflex. 
